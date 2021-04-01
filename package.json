@@ -1,0 +1,16 @@
+{
+  "name": "tensorflow",
+  "version": "0.0.1",
+  "description": "Monitoring Tensorflow",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tensorflow/tfjs": "^3.3.0",
+    "@tensorflow/tfjs-node": "^3.3.0"
+  }
+}
