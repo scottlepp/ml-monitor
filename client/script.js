@@ -131,8 +131,14 @@ async function train(model, data) {
   });
 
   const callbacks = {
-    onEpochEnd: (epoch, log) => console.log(`Epoch ${epoch}: loss = ${log.loss}`),
-    onBatchEnd: (batch, log) => console.log(`Batch ${batch}: loss = ${log.loss}`)
+    onEpochEnd: (epoch, log) => {
+      console.log(`Epoch ${epoch}: loss = ${log.loss} log = ${JSON.stringify(log)}`);
+      post(log)
+    },
+    onBatchEnd: (batch, log) => {
+      console.log(`Batch ${batch}: loss = ${log.loss} log = ${JSON.stringify(log)}`)
+      post(log)
+    }
   }
 
   const cb = {
@@ -159,4 +165,18 @@ async function train(model, data) {
     // callbacks: fitCallbacks
   });
 
+}
+
+async function post(stats) {
+  const body = `status loss=${stats.loss},acc="${stats.acc}"`;
+
+  const rawResponse = await fetch('http://localhost:8086/api/v2/write?org=scott&bucket=ml&precision=s', {
+    method: 'POST',
+    headers: {
+      'Accept': 'text/plain',
+      'Content-Type': 'application/json',
+      'Authorization': 'Token vHUKKHCJ0XjsKuV8KPcj7MxG7boWmv2bv_zBQU8UewsIapO6g34rzFBlqnN3fgBAf3_4zFi1kxQJRmCvQLeChA=='
+    },
+    body
+  });
 }
